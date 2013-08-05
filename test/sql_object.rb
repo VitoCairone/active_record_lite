@@ -15,13 +15,27 @@ class Human < SQLObject
   set_attrs(:id, :fname, :lname, :house_id)
 end
 
+puts "Calling find"
 p Human.find(1)
+puts "Calling find"
 p Cat.find(1)
+puts "Calling find"
 p Cat.find(2)
 
+puts "Calling all"
 p Human.all
+puts "Calling all"
 p Cat.all
 
+puts "Calling new"
 c = Cat.new(:name => "Gizmo", :owner_id => 1)
+puts "Calling save"
 c.save # create
+puts "Fetching"
+p Cat.find(3)
+
+c.name = "Gizmo II"
+puts "Calling save"
 c.save # update
+puts "Fetching"
+p Cat.find(3)
