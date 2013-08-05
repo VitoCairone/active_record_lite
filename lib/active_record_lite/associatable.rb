@@ -20,10 +20,11 @@ class BelongsToAssocParams < AssocParams
   def initialize(name, params)
     self.other_class_name = params[:class_name] || name.to_s.camelize
     self.primary_key = params[:primary_key] || :id
-    self.foreign_key = params[:foreign_key] || "#{name}_id"
+    self.foreign_key = params[:foreign_key] || "#{name}_id".to_sym
   end
 
   def type
+    :has_many
   end
 end
 
@@ -33,10 +34,11 @@ class HasManyAssocParams < AssocParams
                             name.to_s.singularize.camelize
     self.primary_key = params[:primary_key] || :id
     self.foreign_key = params[:foreign_key] ||
-                       "#{self_class.to_s.underscore}_id"
+                       "#{self_class.to_s.underscore}_id".to_sym
   end
 
   def type
+    :has_many
   end
 end
 
@@ -63,7 +65,8 @@ module Associatable
   end
 
   def has_many(name, params = {})
-    aps = HasManyAssocParams.new(name, params, self.class)
+    assoc_params[name] = HasManyAssocParams.new(name, params, self.class)
+    aps = assoc_params[name]
 
     define_method(name) do
       query_str = <<-SQL
