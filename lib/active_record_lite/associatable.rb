@@ -24,7 +24,7 @@ class BelongsToAssocParams < AssocParams
   end
 
   def type
-    :has_many
+    :belongs_to
   end
 end
 
@@ -84,6 +84,9 @@ module Associatable
 
     define_method(name) do
       aps2 = (aps1.other_class).assoc_params[assoc2]
+      unless aps1.type == :belongs_to && aps2.type == :belongs_to
+        raise "has_one_through is only defined on belongs_to associations"
+      end
       query_str = <<-SQL
         SELECT #{aps2.other_table}.*
         FROM #{aps1.other_table} JOIN #{aps2.other_table}
