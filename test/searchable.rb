@@ -17,3 +17,10 @@ end
 
 p Cat.where(:name => "Breakfast")
 p Human.where(:fname => "Matt", :house_id => 1)
+
+puts "Chaining test"
+p Human.where(:fname => "Matt").where(:lname => "Rubens")
+
+puts "Chaining test"
+p Human.where(:fname => "Matt").where(:lname => "Rubens").house_id
+
